@@ -28,6 +28,7 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
             ], 201);
         } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao efetuar login.'], 500);
         }
     }

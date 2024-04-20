@@ -18,10 +18,10 @@ class AdressesController
         try {
             $validated = $request->validated();
             $response = $this->adressApi->getAddressByCEP($validated['cep']);
-
             if (!$response) return response()->json(['message' => 'CEP não encontrado.'], 404);
             return response()->json(['message' => 'Endereço encontrado.', 'data' => $response]);
-        } catch (Throwable) {
+        } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao buscar endereço.'], 500);
         }
     }
@@ -33,7 +33,8 @@ class AdressesController
             $response = $this->adressApi->getCepByAdress($validated['uf'], $validated['city'], $validated['street']);
             if (!$response) return response()->json(['message' => 'Endereço não encontrado.'], 404);
             return response()->json(['message' => 'CEP encontrado.', 'data' => $response]);
-        } catch (Throwable) {
+        } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao buscar CEP.'], 500);
         }
     }

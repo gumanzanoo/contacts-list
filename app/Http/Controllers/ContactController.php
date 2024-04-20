@@ -16,6 +16,29 @@ class ContactController
     public function __construct(protected Contact $contact, protected ContactAddress $contactAddress)
     {}
 
+    public function search(Request $request): JsonResponse
+    {
+        try {
+            $query = $request->query('query');
+            $page = $request->query('page', 1);
+            $per_page = $request->query('per_page', 10);
+
+            $contacts = $this->contact::query()
+                ->when($query, function ($when) use ($query) {
+                    $when->where(function ($where) use ($query) {
+                        $where->where('name', 'LIKE', "%$query%")
+                        ->orWhere('email', 'like', '%' . $query . '%')
+                        ->orWhere('phone', 'like', '%' . $query . '%')
+                        ->orWhere('cpf', 'LIKE', "%$query%");
+                    });
+                })->with('address')->paginate($per_page, ['*'], 'page', $page);
+            return response()->json(['message' => 'Contatos encontrados.', 'data' => $contacts]);
+        } catch (Throwable $th) {
+            log($th->getTraceAsString());
+            return response()->json(['message' => 'Erro ao encontrar contatos.'], 500);
+        }
+    }
+
     public function index(Request $request): JsonResponse
     {
         try {

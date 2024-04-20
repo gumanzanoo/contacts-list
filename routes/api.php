@@ -30,8 +30,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => '/contact'], function () {
         Route::get('/', [ContactController::class, 'index']);
-        Route::post('/', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
+        Route::get('/search/query', [ContactController::class, 'search']);
+        Route::post('/', [ContactController::class, 'store']);
         Route::put('/{contact}', [ContactController::class, 'update']);
         Route::delete('/{contact}', [ContactController::class, 'destroy']);
     });
