@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegistryRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Throwable;
 
 class UserController extends Controller
 {
-    public function __construct(protected User $user)
+    public function __construct(protected UserService $userService)
     {}
 
     /*
@@ -33,13 +33,17 @@ class UserController extends Controller
                 'password' => bcrypt($validated['password']),
             ]);
 
-            $user->createToken('user_access_token')->plainTextToken;
-
-            return response()->json(['message' => 'Usuário cadastrado com sucesso.', 'data' => $validated], 201);
+            return response()->json([
+                'message' => 'Usuário cadastrado com sucesso.',
+                'access_token' => $user->createToken('user_access_token')->plainTextToken
+            ], 201);
         } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao cadastrar usuário.'], 500);
         }
     }
+
+
 
     public function changePassword(): JsonResponse
     {
@@ -51,6 +55,7 @@ class UserController extends Controller
 
             return response()->json(['message' => 'Senha alterada com sucesso.']);
         } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao alterar senha.'], 500);
         }
     }
@@ -65,6 +70,7 @@ class UserController extends Controller
 
             return response()->json(['message' => 'Email alterado com sucesso.']);
         } catch (Throwable $th) {
+            log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao alterar email.'], 500);
         }
     }

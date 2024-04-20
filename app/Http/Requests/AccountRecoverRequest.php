@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegistryRequest extends FormRequest
+class AccountRecoverRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,7 @@ class UserRegistryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required', 'string', 'min:8'],
+            'email' => 'required|string|email|max:255|exists:users,email',
         ];
     }
 
@@ -37,14 +34,13 @@ class UserRegistryRequest extends FormRequest
      */
     public function messages(): array
     {
+        $invalidEmailMessage = 'E-mail inválido.';
         return [
-            'name.required' => 'Você precisa informar um nome.',
             'email.required' => 'Você precisa informar um e-mail.',
-            'email.email' => 'Email inválido.',
-            'email.unique' => 'Email já cadastrado.',
-            'password.required' => 'Você precisa informar uma senha.',
-            'password.min' => 'A senha precisa ter no mínimo 8 caracteres.',
-            'password.confirmed' => 'As senhas não conferem.',
+            'email.string' => $invalidEmailMessage,
+            'email.email' => $invalidEmailMessage,
+            'email.max' => $invalidEmailMessage,
+            'email.exists' => $invalidEmailMessage,
         ];
     }
 }
