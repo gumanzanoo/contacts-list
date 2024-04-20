@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AccountRecoverRequest;
 use App\Http\Requests\RecoverPasswordRequest;
+use App\Jobs\MailerJob;
+use App\Mail\AccountRecover;
 use App\Models\User;
-use App\Services\AccountRecoverService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Password;
 use Throwable;
 
 class AccountRecoverController extends Controller
 {
-    public function __construct(protected AccountRecoverService $accountRecoverService)
+    public function __construct(protected User $user)
     {}
 
     /**
@@ -22,7 +24,9 @@ class AccountRecoverController extends Controller
     {
         try {
             $validated = $request->validated();
-            $this->accountRecoverService->sendRecoverEmail($validated['email']);
+            /** @var User $user */
+            $user = $this->user::getUserByEmail($validated['email']);
+            MailerJob::dispatch($validated['email'], new AccountRecover(Password::broker()->createToken($user)));
             return response()->json(['message' => 'E-mail enviado com sucesso.']);
         } catch (Throwable $th) {
             log($th->getTraceAsString());
@@ -35,13 +39,14 @@ class AccountRecoverController extends Controller
         try {
             $validated = $request->validated();
 
-            /** @var ?User $user */
-            $user = $this->accountRecoverService->changePassword(
-                $validated['email'], $validated['password'], $validated['token']);
-
-            if (!$user) {
+            /** @var User $user */
+            $user = $this->user::getUserByEmail($validated['email']);
+            if (!Password::broker()->tokenExists($user, $validated['token'])) {
                 return response()->json(['message' => 'Token inválido.'], 403);
             }
+
+            $user->password = bcrypt($validated['password']);
+            $user->save();
 
             return response()->json([
                 'message' => 'Senha alterada com sucesso.',
@@ -51,4 +56,5 @@ class AccountRecoverController extends Controller
             log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao recuperar conta.'], 500);
         }
-    }}
+    }
+}

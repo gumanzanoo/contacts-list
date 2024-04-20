@@ -10,7 +10,6 @@ use Throwable;
 class AuthController extends Controller
 {
     /**
-     * Login do usuário.
      * @param LoginRequest $request
      * @return JsonResponse
      */
@@ -34,7 +33,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout do usuário.
      * @param Request $request
      * @return JsonResponse
      */

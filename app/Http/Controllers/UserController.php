@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteAccountRequest;
 use App\Http\Requests\UserRegistryRequest;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class UserController extends Controller
 {
-    public function __construct(protected UserService $userService)
+    public function __construct(protected User $user)
     {}
 
     /*
@@ -34,44 +35,31 @@ class UserController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Usuário cadastrado com sucesso.',
+                'message' => 'Cadastro concluído.',
                 'access_token' => $user->createToken('user_access_token')->plainTextToken
             ], 201);
         } catch (Throwable $th) {
             log($th->getTraceAsString());
-            return response()->json(['message' => 'Erro ao cadastrar usuário.'], 500);
+            return response()->json(['message' => 'Erro ao realizar cadastro.'], 500);
         }
     }
 
-
-
-    public function changePassword(): JsonResponse
+    public function destroy(DeleteAccountRequest $request): JsonResponse
     {
         try {
-            /** @var User $user */
-            $user = auth()->user();
-            $user->password = bcrypt(request('password'));
-            $user->save();
+            $validated = $request->validated();
 
-            return response()->json(['message' => 'Senha alterada com sucesso.']);
+            /** @var User $user */
+            $user = $request->user();
+            if (!Hash::check($validated['password'], $user->password)) {
+                return response()->json(['message' => 'Senha inválida.'], 403);
+            }
+
+            $user->delete();
+            return response()->json(['message' => 'Conta cancelada com sucesso.']);
         } catch (Throwable $th) {
             log($th->getTraceAsString());
-            return response()->json(['message' => 'Erro ao alterar senha.'], 500);
-        }
-    }
-
-    public function changeEmail(): JsonResponse
-    {
-        try {
-            /** @var User $user */
-            $user = auth()->user();
-            $user->email = request('email');
-            $user->save();
-
-            return response()->json(['message' => 'Email alterado com sucesso.']);
-        } catch (Throwable $th) {
-            log($th->getTraceAsString());
-            return response()->json(['message' => 'Erro ao alterar email.'], 500);
+            return response()->json(['message' => 'Erro ao deletar conta.'], 500);
         }
     }
 }
