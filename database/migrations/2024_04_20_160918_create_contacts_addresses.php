@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts_addresses', function (Blueprint $table) {
+        Schema::create('contact_addresses', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('contact_id')->unsigned();
-            $table->foreign('contact_id')
-                ->references('id')
-                ->on('contacts');
-            $table->string('cep', 8)->nullable(false);
-            $table->string('state', 100)->nullable(false);
-            $table->string('city', 100)->nullable(false);
-            $table->string('street', 255)->nullable(false);
-            $table->integer('number')->nullable(false);
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->string('cep', 8);
+            $table->string('state', 100);
+            $table->string('city', 100);
+            $table->string('street', 255);
+            $table->integer('number');
             $table->text('complement')->nullable();
-            $table->double('latitude')->nullable(false);
-            $table->double('longitude')->nullable(false);
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
         });
     }

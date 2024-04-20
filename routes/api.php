@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/adress', [AdressesController::class, 'getAddressByCEP']);
     Route::get('/cep', [AdressesController::class, 'getCepByAdress']);
 
-    Route::group(['prefix' => '/contacts'], function () {
+    Route::group(['prefix' => '/contact'], function () {
         Route::get('/', [ContactController::class, 'index']);
         Route::post('/', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
