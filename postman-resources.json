@@ -1,0 +1,991 @@
+{
+	"info": {
+		"_postman_id": "33a3fad5-0b3d-417e-b86a-8dd9abbc901a",
+		"name": "UEX Resources",
+		"description": "Documentação dos recursos de API para o teste técnico da vaga de desenvolvedor ofertada pela UEX.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26898340",
+		"_collection_link": "https://solar-capsule-84440.postman.co/workspace/Holder~adf6a912-d492-47b9-aef4-cbd91f74c88b/collection/26898340-33a3fad5-0b3d-417e-b86a-8dd9abbc901a?action=share&source=collection_link&creator=26898340"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Me (Usuário autenticado)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth"
+							]
+						},
+						"description": "Retorna informações sobre o usuário autenticado com base no token de acesso fornecido. É útil para verificar a autenticação e obter dados do perfil do usuário logado."
+					},
+					"response": []
+				},
+				{
+					"name": "User registry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();",
+									"var token = responseData.access_token;",
+									"pm.environment.set('bearer', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Gustavo Manzano\",\n    \"email\": \"gmz@hotmail.com\",\n    \"password\": \"321654987\",\n    \"password_confirmation\": \"321654987\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Utilizado para registrar um novo usuário no sistema. Requer dados pessoais do usuário, incluindo nome, e-mail e senha."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"321654987\",\n    \"password_confirmation\": \"321654987\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Permite ao usuário deletar sua própria conta. É necessário fornecer a senha atual para confirmar a exclusão da conta."
+					},
+					"response": []
+				}
+			],
+			"description": "Recursos do usuário cliente, incluindo: cadastro, recuperação de conta e exclusão do próprio cadastro."
+		},
+		{
+			"name": "Account recover",
+			"item": [
+				{
+					"name": "Recuperação de conta (email)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"gmz@hotmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/account-recover",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"account-recover"
+							]
+						},
+						"description": "Iniciará o processo de recuperação de conta via e-mail. Quando chamado, o sistema envia um e-mail para o usuário com instruções e um token para redefinir a senha."
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperação de conta (mudar senha)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();",
+									"var token = responseData.access_token;",
+									"pm.environment.set('bearer', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"gmz@hotmail.com\",\n    \"token\": \"db744e76868aa4420a913a871913f29bea691ed0bfee77b210bbaf7fa90c8047\",\n    \"password\": \"321654987\",\n    \"password_confirmation\": \"321654987\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/account-recover",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"account-recover"
+							]
+						},
+						"description": "Permite ao usuário redefinir a senha usando o token recebido por e-mail. O usuário deve fornecer o novo password junto com o token para atualizar sua senha."
+					},
+					"response": []
+				}
+			],
+			"description": "Recurso para recuperação de conta. A implementação necessita de uma página com formulário para intermediar o processo de recuperação de conta para o usuário final."
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();",
+									"var token = responseData.access_token;",
+									"pm.environment.set('bearer', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"gmz@hotmail.com\",\n    \"password\": \"321654987\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth"
+							]
+						},
+						"description": "Endpoint para autenticação de usuários. O usuário deve fornecer e-mail e senha, e em resposta, recebe um token de acesso se as credenciais estiverem corretas."
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();",
+									"var token = responseData.access_token;",
+									"pm.environment.set('bearer', token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth"
+							]
+						},
+						"description": "Permite ao cliente (front-end) obter um novo token de acesso usando o token de acesso atual antes que ele expire, garantindo que o usuário mantenha a sessão ativa sem necessidade de login novamente."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth"
+							]
+						},
+						"description": "Este endpoint é usado para encerrar a sessão do usuário, invalidando o token de acesso atual. Requer que o usuário esteja autenticado e forneça seu token de acesso."
+					},
+					"response": []
+				}
+			],
+			"description": "Recursos para autenticação, foi utilizado o pacote sanctum do laravel, que oferece uma forma simples de armazenar um token de autenticação no estado da sessão para tornar fácil a navegação entre as API's."
+		},
+		{
+			"name": "Contacts",
+			"item": [
+				{
+					"name": "Registrar novo contato",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"João Silva\",\n    \"cpf\": \"12345678909\",\n    \"email\": \"joaosilva@example.com\",\n    \"phone\": \"11987654321\",\n    \"cep\": \"01001000\",\n    \"state\": \"SP\",\n    \"city\": \"São Paulo\",\n    \"street\": \"Praça da Sé\",\n    \"number\": \"s/n\",\n    \"complement\": \"Lado ímpar\",\n    \"latitude\": -23.550520,\n    \"longitude\": -46.633308\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact"
+							]
+						},
+						"description": "Adiciona um novo contato ao banco de dados do usuário autenticado. Requer detalhes do contato, incluindo nome, CPF, endereço, etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Update contact",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"João Silva Sauro\",\n    \"cpf\": \"12345678909\",\n    \"email\": \"joaosilva@example.com\",\n    \"phone\": \"11987654321\",\n    \"cep\": \"01001000\",\n    \"state\": \"SP\",\n    \"city\": \"São Paulo\",\n    \"street\": \"Praça da Sé\",\n    \"number\": \"s/n\",\n    \"complement\": \"Lado ímpar\",\n    \"latitude\": -23.550520,\n    \"longitude\": -46.633308\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact",
+								"1"
+							]
+						},
+						"description": "Atualiza os dados de um contato existente. É necessário fornecer todos os campos novamente mesmo que apenas um campo seja alterado."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar contatos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact?page=1&per_page=10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Retorna uma lista paginada de todos os contatos associados ao usuário autenticado, com a opção de definir o número de contatos por página."
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar contato",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact",
+								"1"
+							]
+						},
+						"description": "Retorna os detalhes de um contato específico pelo seu ID, acessível apenas pelo usuário autenticado que criou o contato."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar contato",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact",
+								"1"
+							]
+						},
+						"description": "Permite ao usuário deletar um contato existente pelo ID. Requer autenticação."
+					},
+					"response": []
+				},
+				{
+					"name": "Procurar contato",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/contact/search/query?page=1&per_page=10&query=joaosilva@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"contact",
+								"search",
+								"query"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "query",
+									"value": "joaosilva@example.com"
+								}
+							]
+						},
+						"description": "Permite ao usuário procurar contatos por e-mail ou outros critérios. Retorna uma lista de contatos que correspondem à consulta."
+					},
+					"response": []
+				}
+			],
+			"description": "Recursos para manipulação da lista de contatos."
+		},
+		{
+			"name": "AdressAPI",
+			"item": [
+				{
+					"name": "Endereço por CEP",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/adress?cep=80250104",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"adress"
+							],
+							"query": [
+								{
+									"key": "cep",
+									"value": "80250104"
+								}
+							]
+						},
+						"description": "Retorna detalhes do endereço correspondente ao CEP fornecido para preenchimento automático de formulários de endereço."
+					},
+					"response": []
+				},
+				{
+					"name": "CEP por endereço",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/cep?uf=PR&city=Curitiba&street=Pasteur",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"cep"
+							],
+							"query": [
+								{
+									"key": "uf",
+									"value": "PR"
+								},
+								{
+									"key": "city",
+									"value": "Curitiba"
+								},
+								{
+									"key": "street",
+									"value": "Pasteur"
+								}
+							]
+						},
+						"description": "Retorna o CEP com base nos detalhes do endereço fornecidos, como UF, cidade e rua. Facilita a obtenção de CEP quando apenas o endereço é conhecido."
+					},
+					"response": []
+				}
+			],
+			"description": "Recursos de pesquisa de endereços, tendo opções de procura por CEP, e por endereço, opções disponíveis pelo serviço ViaCEP."
+		}
+	]
+}
