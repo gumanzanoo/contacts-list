@@ -23,7 +23,10 @@ class ContactController
             $page = $request->query('page', 1);
             $per_page = $request->query('per_page', 10);
 
-            $contacts = $this->contact::query()
+            /** @var User $user */
+            $user = $request->user();
+
+            $contacts = $user->contacts()
                 ->when($query, function ($when) use ($query) {
                     $when->where(function ($where) use ($query) {
                         $where->where('name', 'LIKE', "%$query%")
@@ -84,7 +87,7 @@ class ContactController
                 'longitude' => $validated['longitude']
             ]);
 
-            return response()->json(['message' => 'Contato criado.', 'data' => $contact->load('address')]);
+            return response()->json(['message' => 'Contato criado.', 'data' => $contact->load('address')], 201);
         } catch (Throwable $th) {
             log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao criar contato.'], 500);

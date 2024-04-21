@@ -27,7 +27,7 @@ class AccountRecoverController extends Controller
             /** @var User $user */
             $user = $this->user::getUserByEmail($validated['email']);
             MailerJob::dispatch($validated['email'], new AccountRecover(Password::broker()->createToken($user)));
-            return response()->json(['message' => 'E-mail enviado com sucesso.']);
+            return response()->json(['message' => 'E-mail enviado com sucesso.'], 201);
         } catch (Throwable $th) {
             log($th->getTraceAsString());
             return response()->json(['message' => 'Erro ao enviar e-mail.'], 500);

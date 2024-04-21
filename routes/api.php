@@ -8,7 +8,7 @@ use App\Http\Controllers\AdressesController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/account-recover'], function () {
-    Route::get('/', [AccountRecoverController::class, 'accountRecoverRequest']);
+    Route::post('/', [AccountRecoverController::class, 'accountRecoverRequest']);
     Route::patch('/', [AccountRecoverController::class, 'passwordRecover']);
 });
 
