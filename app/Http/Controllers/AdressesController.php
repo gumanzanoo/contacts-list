@@ -48,8 +48,13 @@ class AdressesController
             $validated = $request->validated();
             $response = $this->adressApi->getCepByAdress($validated['uf'], $validated['city'], $validated['street']);
             if (!$response) return response()->json(['message' => 'Endereço não encontrado.'], 404);
-            $coordinates = $this->getCoordinates($response['uf'], $response['localidade'], $response['logradouro']);
-            if ($coordinates) $response['coordinates'] = $coordinates;
+            foreach ($response as $key => $value) {
+                $coordinates = $this->getCoordinates($value['uf'], $value['localidade'], $value['logradouro']);
+                if (empty($coordinates)) {
+                    $response[$key]['coordinates'] = $coordinates;
+                }
+            }
+
             return response()->json(['message' => 'CEP encontrado.', 'data' => $response]);
         } catch (Throwable $th) {
             log($th->getTraceAsString());

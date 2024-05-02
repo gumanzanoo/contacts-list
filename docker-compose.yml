@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+    laravel:
+        container_name: contactslist-container
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        user: 'mzndesk:mzndesk'
+        ports:
+            - '8000:8000'
+        volumes:
+            - ./:/var/www/contactslist
+        command: [
+            "bash",
+            "-c",
+            "cd /var/www/contactslist && composer install && tail -f storage/logs/laravel.log"
+        ]
