@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "33a3fad5-0b3d-417e-b86a-8dd9abbc901a",
-		"name": "UEX Resources",
-		"description": "Documentação dos recursos de API para o teste técnico da vaga de desenvolvedor ofertada pela UEX.",
+		"name": "Resources",
+		"description": "Documentação dos recursos de API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26898340",
 		"_collection_link": "https://solar-capsule-84440.postman.co/workspace/Holder~adf6a912-d492-47b9-aef4-cbd91f74c88b/collection/26898340-33a3fad5-0b3d-417e-b86a-8dd9abbc901a?action=share&source=collection_link&creator=26898340"
